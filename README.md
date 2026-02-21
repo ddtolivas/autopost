@@ -1,19 +1,17 @@
 Automatically posts videos from a google drive file to twitter
-Automatically post videos from a Google Drive folder to X (Twitter) once a day.
+Automatically post videos from a local folder on your computer to X (Twitter) once a day.
 
 ## What this script does
 
-- Reads videos from a specific Google Drive folder (oldest first)
+- Reads videos from a local folder (oldest first)
 - Tracks which files have already been posted in a local JSON state file
-- Downloads the next unposted video
-- Uploads and posts it to X/Twitter
+- Uploads the next unposted video to X/Twitter
+- Uses the same caption for every post (customizable)
 - Repeats every 24 hours (or custom interval)
 
 ## Requirements
 
 - Python 3.10+
-- A Google Cloud service account JSON key with Drive API access
-- The Drive folder shared with that service account email
 - X/Twitter API keys and access tokens that can upload media and post tweets
 
 Install dependencies:
@@ -34,8 +32,7 @@ cp .env.example .env
 
 Required environment variables:
 
-- `GOOGLE_DRIVE_FOLDER_ID`
-- `GOOGLE_SERVICE_ACCOUNT_FILE`
+- `LOCAL_VIDEO_FOLDER`
 - `TWITTER_CONSUMER_KEY`
 - `TWITTER_CONSUMER_SECRET`
 - `TWITTER_ACCESS_TOKEN`
@@ -43,7 +40,7 @@ Required environment variables:
 
 Optional:
 
-- `TWEET_TEMPLATE` (default: `{filename}`)
+- `POST_CAPTION` (same caption for every video post, default: empty)
 - `POST_INTERVAL_SECONDS` (default: `86400`)
 - `STATE_FILE` (default: `.autopost_state.json`)
 
@@ -59,6 +56,12 @@ Run forever in a loop (once per day by default):
 
 ```bash
 python autopost.py
+```
+
+Set a custom caption from the command line (overrides `POST_CAPTION`):
+
+```bash
+python autopost.py --run-once --caption "New drop 🎬"
 ```
 
 Custom interval (example: every hour):
